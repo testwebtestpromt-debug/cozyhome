@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cozy Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1efeb;--card:#fff;--ink:#121212;--mut:#66625c;--or:#ff6a2b;--line:#dcd8d0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1d1d1d;--ink:#f4f1ec;--mut:#a7a39c;--line:#333}}
+:root[data-theme="dark"]{--bg:#121212;--card:#1d1d1d;--ink:#f4f1ec;--mut:#a7a39c;--line:#333}
+html{scroll-behavior:smooth}
+*{box-sizing:border-box}
+html,body{overflow-x:clip;max-width:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Outfit,system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+button{font:inherit;cursor:pointer}a{color:inherit}
+:focus-visible{outline:3px solid var(--or);outline-offset:3px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;text-decoration:none;line-height:.95;color:#fff;mix-blend-mode:difference}
+.menuBtn{border:0;border-radius:999px;height:44px;padding:0 20px;font-weight:700;background:var(--or);color:#111;display:flex;align-items:center;gap:10px;transition:transform .2s}
+.menuBtn:hover{transform:scale(1.06)}
+.bars{width:18px;height:12px;position:relative}
+.bars::before,.bars::after{content:"";position:absolute;left:0;width:100%;height:2.5px;background:#111;border-radius:2px;transition:.3s}
+.bars::before{top:0}.bars::after{bottom:0}
+.menuBtn.x .bars::before{top:5px;transform:rotate(45deg)}.menuBtn.x .bars::after{bottom:4.5px;transform:rotate(-45deg)}
+/* MENU OVERLAY */
+#menu{position:fixed;inset:0;z-index:40;background:#0d0d0d;color:#fff;display:flex;flex-direction:column;justify-content:center;padding:100px 28px 40px;clip-path:circle(0 at calc(100% - 70px) 48px);transition:clip-path .7s cubic-bezier(.7,0,.2,1);visibility:hidden}
+#menu.on{clip-path:circle(150% at calc(100% - 70px) 48px);visibility:visible}
+#menu a.m{display:block;font-size:clamp(2.6rem,10vw,5.5rem);font-weight:900;text-decoration:none;line-height:1.1;letter-spacing:-.03em;color:#fff;opacity:0;transform:translateY(40px);transition:opacity .5s,transform .5s,color .2s;width:fit-content}
+#menu.on a.m{opacity:1;transform:none;transition-delay:calc(.25s + var(--i)*.08s)}
+#menu a.m:hover{color:var(--or);transform:translateX(14px)!important}
+#menu small{position:absolute;bottom:calc(30px + env(safe-area-inset-bottom,0px));left:28px;color:#999}
+/* HERO */
+.hero{position:relative;min-height:100svh;background:#0d0d0d;color:#fff;display:grid;align-items:center;overflow:hidden;padding:90px 0 60px}
+.glow{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,#ff6a2b66,transparent 65%);left:0;top:0;transform:translate(var(--x,60vw),var(--y,20vh)) translate(-50%,-50%);pointer-events:none;transition:transform .25s ease-out}
+.hg{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center}
+h1{font-size:clamp(2.6rem,8vw,5.6rem);line-height:.95;margin:0 0 20px;font-weight:900;letter-spacing:-.03em}
+h1 span{display:inline-block;overflow:hidden;vertical-align:top}
+h1 i{display:inline-block;font-style:normal;transform:translateY(110%);animation:up .9s cubic-bezier(.2,.9,.2,1) forwards;animation-delay:calc(var(--d)*.12s + .3s)}
+@keyframes up{to{transform:none}}
+.hero p{color:#c9c5be;font-size:1.15rem;max-width:44ch;margin:0 0 28px;opacity:0;animation:fade 1s 1.4s forwards}
+@keyframes fade{to{opacity:1}}
+.btn{display:inline-block;padding:15px 26px;border-radius:999px;font-weight:700;text-decoration:none;border:0;background:var(--or);color:#111;opacity:0;animation:fade 1s 1.7s forwards;transition:transform .2s}
+.btn:hover{transform:translateY(-3px) scale(1.04)}
+.scene{position:relative;justify-self:center;width:min(380px,80vw);aspect-ratio:1}
+.scene svg{width:100%;height:100%;overflow:visible}
+.h1p{stroke:#fff;stroke-width:7;fill:none;stroke-linejoin:round;stroke-dasharray:700;stroke-dashoffset:700;animation:draw 1.8s .2s ease forwards}
+.h2p{fill:var(--or);opacity:0;animation:fade .8s 1.5s forwards}
+.h3p{fill:#9a9a9a;opacity:0;transform-origin:50% 100%;animation:pop .7s 1.9s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{transform:scale(.3)}to{transform:none;opacity:1}}
+.fl{position:absolute;font-size:2.2rem;animation:flt 5s ease-in-out infinite;filter:drop-shadow(0 8px 12px #0008)}
+@keyframes flt{50%{transform:translateY(-16px) rotate(8deg)}}
+.mq{background:var(--or);color:#111;overflow:hidden;white-space:nowrap;padding:14px 0;font-weight:900;font-size:1.3rem;transform:rotate(-1.2deg);margin:-14px -10px 0;position:relative;z-index:2}
+.mq div{display:inline-block;animation:mq 24s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:70px 0 10px;text-align:center}
+.stats b{display:block;font-size:clamp(2rem,6vw,3.6rem);font-weight:900;color:var(--or);line-height:1}
+.stats span{color:var(--mut)}
+section{padding:60px 0 8px;scroll-margin-top:20px}
+h2{font-size:clamp(1.9rem,5vw,3rem);margin:0 0 12px;letter-spacing:-.02em;font-weight:900}
+.about{font-size:1.2rem;color:var(--mut);max-width:60ch}
+details{border-bottom:2px solid var(--line);padding:16px 0}
+summary{font-weight:700;cursor:pointer;font-size:1.05rem}
+details p{color:var(--mut);margin:8px 0 0}
+footer{padding:50px 0 130px;color:var(--mut);text-align:center;font-size:.92rem}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .8s,transform .8s}.rv.v{opacity:1;transform:none}
+/* CONTACT FAB */
+#fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:45;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+#fabBtn{border:0;border-radius:999px;height:58px;padding:0 24px;background:var(--or);color:#111;font-weight:900;font-size:1.05rem;box-shadow:0 10px 30px #ff6a2b66;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #ff6a2b99}70%{box-shadow:0 0 0 18px #ff6a2b00}100%{box-shadow:0 0 0 0 #ff6a2b00}}
+#panel{width:min(320px,calc(100vw - 36px));background:var(--card);border-radius:24px;padding:10px;box-shadow:0 20px 60px #0006;transform:translateY(20px) scale(.92);transform-origin:bottom right;opacity:0;pointer-events:none;transition:.3s cubic-bezier(.3,1.4,.5,1)}
+#panel.on{transform:none;opacity:1;pointer-events:auto}
+#panel a{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;text-decoration:none;transition:background .2s}
+#panel a:hover{background:var(--bg)}
+#panel .ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;flex:none}
+#panel b{display:block;line-height:1.2}#panel span{color:var(--mut);font-size:.92rem}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.wc{background:var(--card);border-radius:24px;padding:28px;position:relative;overflow:hidden}.wc:hover{transform:translateY(-8px);box-shadow:0 18px 40px #ff6a2b33}.wc.v{transition:transform .3s,box-shadow .3s}.wc .ico{width:58px;height:58px;border-radius:18px;background:var(--or);display:grid;place-items:center;font-size:1.7rem;margin-bottom:14px;animation:flt 4s ease-in-out infinite}.wc b{display:block;font-size:1.2rem}.wc span{color:var(--mut)}#panel .ic svg{width:24px;height:24px}
+.tl{position:relative;padding-left:64px;margin:10px 0 24px}.tl::before,.tl::after{content:"";position:absolute;left:23px;top:0;bottom:0;width:4px;border-radius:2px;background:var(--line)}.tl::after{background:var(--or);transform:scaleY(0);transform-origin:top;transition:transform 2s ease}.tl.v::after{transform:none}.ts{position:relative;padding:0 0 34px}.ts i{position:absolute;left:-64px;top:0;width:50px;height:50px;border-radius:50%;background:var(--or);color:#111;font-style:normal;font-weight:900;display:grid;place-items:center;font-size:1.2rem;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}.tl.v .ts i{transform:none;transition-delay:calc(var(--k)*.6s)}.ts b{display:block;font-size:1.25rem}.ts span{color:var(--mut)}
+@media(max-width:760px){.why{grid-template-columns:1fr}}
+@media(max-width:760px){.hg{grid-template-columns:1fr}.scene{width:min(240px,60vw);order:-1;justify-self:start}.hero{padding-top:80px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition:none!important}.rv{opacity:1;transform:none}h1 i{transform:none}.hero p,.btn{opacity:1}.h1p{stroke-dashoffset:0}.h2p,.h3p{opacity:1}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+<a class="logo" href="#top" aria-label="Cozy Home"><svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 48 50 8l42 40v44H8z" fill="#ff6a2b" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/></svg><span>COZY<br>HOME</span></a>
+<button class="menuBtn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span id="mt">Menu</span><i class="bars"></i></button>
+</div></header>
+
+<nav id="menu" aria-label="Menu kryesore">
+<a class="m" style="--i:0" href="#top">Kreu</a>
+<a class="m" style="--i:1" href="#rreth">Rreth nesh</a>
+<a class="m" style="--i:2" href="#faq">Pyetje</a>
+<a class="m" style="--i:3" href="#" data-contact>Kontakt</a>
+<small>Gjithçka ju duhet në ambientet tuaja.</small>
+</nav>
+
+<main id="top">
+<div class="hero" id="hero"><div class="glow" id="glow"></div>
+<div class="wrap hg">
+<div>
+<h1><span><i style="--d:0">Gjithçka</i></span> <span><i style="--d:1">ju</i></span> <span><i style="--d:2">duhet</i></span> <span><i style="--d:3">në</i></span> <span><i style="--d:4">ambientet</i></span> <span><i style="--d:5">tuaja.</i></span></h1>
+<p>Çarçafë, batanije, jorganë dhe aksesorë që e bëjnë shtëpinë tënde më të ngrohtë.</p>
+<a class="btn" href="#" data-contact>Na kontakto</a>
+</div>
+<div class="scene">
+<svg viewBox="0 0 200 180" role="img" aria-label="Logo Cozy Home"><path class="h2p" d="M14 90 100 12l86 78v78H14z"/><path class="h3p" d="M76 168V104l36-34 62 56v42z"/><path class="h1p" d="M14 90 100 12l86 78v78H14z"/></svg>
+<span class="fl" style="left:-6%;top:8%">🛏️</span><span class="fl" style="right:-4%;top:22%;animation-delay:-1.5s">🧸</span><span class="fl" style="left:6%;bottom:-4%;animation-delay:-3s">☁️</span><span class="fl" style="right:8%;bottom:2%;animation-delay:-2s">❄️</span>
+</div>
+</div></div>
+
+
+<div class="wrap">
+<div class="stats rv"><div><b data-n="866">0</b><span>ndjekës në TikTok</span></div><div><b data-n="8676">0</b><span>pëlqime</span></div><div><b data-n="4">0</b><span>kategori produktesh</span></div></div>
+
+<section id="rreth"><h2 class="rv">Rreth nesh</h2>
+<p class="about rv">Cozy Home sjell tekstile për shtëpinë: çarçafë, batanije, jorganë dhe aksesorë. Shkruaj në WhatsApp, na thuaj çfarë të duhet dhe merremi vesh për madhësinë, çmimin dhe dorëzimin.</p></section>
+
+<section id="pse"><h2 class="rv">Pse Cozy Home</h2><p class="sub rv" style="color:var(--mut);margin:0 0 24px">Të thjeshtë për ty, të ngrohtë për shtëpinë.</p>
+<div class="why"><div class="wc rv"><div class="ico">🧵</div><b>Materiale të buta</b><span>Fanellë, pellush dhe kadife që ndihen mirë çdo ditë.</span></div><div class="wc rv" style="transition-delay:.15s"><div class="ico">📏</div><b>Teke dhe dopio</b><span>Madhësi për çdo shtrat, që nga 150x200 deri në 200x230 cm.</span></div><div class="wc rv" style="transition-delay:.3s"><div class="ico">💬</div><b>Porosi në WhatsApp</b><span>Shkruaj, zgjidh dhe merremi vesh për dorëzimin pa komplikime.</span></div></div></section>
+<section id="porosia"><h2 class="rv">Si porosit</h2><p class="sub rv" style="color:var(--mut);margin:0 0 24px">Tre hapa, pa regjistrim.</p>
+<div class="tl rv"><div class="ts" style="--k:0"><i>1</i><b>Na shkruaj</b><span>Dërgo një mesazh në WhatsApp ose na telefono në 0685435174.</span></div><div class="ts" style="--k:1"><i>2</i><b>Zgjidh produktin</b><span>Na thuaj çfarë të duhet dhe në çfarë madhësie: teke ose dopio.</span></div><div class="ts" style="--k:2"><i>3</i><b>Konfirmojmë</b><span>Merremi vesh për çmimin, pagesën dhe dorëzimin.</span></div></div>
+<a class="btn" href="#" data-contact>Fillo porosinë</a></section>
+<section id="faq"><h2 class="rv">Pyetje të shpeshta</h2>
+<details><summary>Si bëj porosinë?</summary><p>Shtyp "Kontakt" poshtë djathtas dhe na shkruaj në WhatsApp ose na telefono.</p></details>
+<details><summary>Çfarë madhësish ka?</summary><p>Batanijet dhe çarçafët vijnë teke dhe dopio.</p></details>
+<details><summary>Si paguhet dhe dorëzohet?</summary><p>E konfirmojmë me ty në WhatsApp.</p></details>
+</section>
+</div>
+</main>
+<footer>© <span id="yr"></span> Cozy Home</footer>
+
+<div id="fab">
+<div id="panel" role="dialog" aria-label="Kontakt" aria-hidden="true">
+<a href="tel:+355685435174"><span class="ic" style="background:#2b6cff"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.25c1.1.37 2.3.57 3.6.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.6a1 1 0 01-.25 1z"/></svg></span><div><b>Telefon</b><span>0685435174</span></div></a>
+<a href="https://wa.me/355685435174" target="_blank" rel="noopener"><span class="ic" style="background:#25D366"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span><div><b>WhatsApp</b><span>0685435174</span></div></a>
+<a href="https://www.tiktok.com/@__cozyhome__" target="_blank" rel="noopener"><span class="ic" style="background:#000"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg></span><div><b>TikTok</b><span>@__cozyhome__</span></div></a>
+</div>
+<button id="fabBtn" aria-expanded="false" aria-controls="panel">Kontakt</button>
+</div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var w="🛏️ Çarçafë &nbsp;&nbsp; 🧸 Batanije &nbsp;&nbsp; ❄️ Jorganë &nbsp;&nbsp; 🪑 Aksesorë &nbsp;&nbsp; ";
+
+function menu(v){$("menu").classList.toggle("on",v);$("menuBtn").classList.toggle("x",v);$("menuBtn").setAttribute("aria-expanded",v);$("mt").textContent=v?"Mbyll":"Menu";document.body.style.overflow=v?"hidden":""}
+function panel(v){$("panel").classList.toggle("on",v);$("panel").setAttribute("aria-hidden",!v);$("fabBtn").setAttribute("aria-expanded",v);$("fabBtn").textContent=v?"Mbyll":"Kontakt"}
+$("menuBtn").onclick=function(){menu(!$("menu").classList.contains("on"))};
+$("fabBtn").onclick=function(){panel(!$("panel").classList.contains("on"))};
+document.querySelectorAll("#menu a.m").forEach(function(a){a.onclick=function(e){menu(false);if(a.hasAttribute("data-contact")){e.preventDefault();setTimeout(function(){panel(true)},500)}}});
+document.querySelectorAll(".btn[data-contact]").forEach(function(a){a.onclick=function(e){e.preventDefault();panel(true)}});
+document.addEventListener("keydown",function(e){if(e.key=="Escape"){menu(false);panel(false)}});
+document.addEventListener("click",function(e){if(!e.target.closest("#fab")&&!e.target.closest("[data-contact]"))panel(false)});
+$("yr").textContent=new Date().getFullYear();
+$("hero").addEventListener("pointermove",function(e){var r=this.getBoundingClientRect();$("glow").style.setProperty("--x",e.clientX-r.left+"px");$("glow").style.setProperty("--y",e.clientY-r.top+"px")});
+function count(el){var n=+el.dataset.n,s=performance.now();(function f(t){var k=Math.min(1,(t-s)/1600);el.textContent=Math.round(n*(1-Math.pow(1-k,3))).toLocaleString("sq-AL")+(n>800?"+":"");if(k<1)requestAnimationFrame(f)})(s)}
+var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add("v");x.target.querySelectorAll("[data-n]").forEach(count);io.unobserve(x.target)}})},{threshold:.2});
+document.querySelectorAll(".rv").forEach(function(e){io.observe(e)});
+</script>
+</body>
+</html>
